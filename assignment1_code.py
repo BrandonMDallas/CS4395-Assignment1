@@ -84,6 +84,104 @@ class UnigramModel():
     unigram_count = self.df.loc[self.df['unigram'] == unigram, 'count'].values[0]
     return unigram_count / len(self.corpus)
 
+class BigramModel():
+
+  def set_training_corpus(self, corpus):
+      # Tokenize and normalize the corpus
+      self.corpus = nltk.word_tokenize(corpus)
+      self.corpus = [token.lower() for token in self.corpus if token.isalpha()]
+
+  def load(self):
+    self._init_bigram()
+    self._init_bigram_counts()
+    self._init_bigram_probability()
+
+  def run(self, text):
+
+      # Tokenize and normalize the text
+      tokens = nltk.word_tokenize(text)
+      tokens = [token.lower() for token in tokens if token.isalpha()]
+      tokens = ["<s>"] + tokens
+      probabilities = []
+
+      for i in range(1, len(tokens)):
+          bigram = (tokens[i-1], tokens[i])
+          # Retrieve probability;
+          try:
+              p = self.df.loc[self.df['bigram'] == bigram, 'probability'].values[0]
+          except IndexError:
+              p = 1e-6  # fallback probability for unseen bigrams
+          probabilities.append(p)
+
+      return np.prod(probabilities)
+
+  def compute_perplexity(self, text):
+      #Split validation text into sentences
+
+      sentences = nltk.sent_tokenize(text)
+      total_log_prob = 0.0
+
+      # num of bigrams
+      total_tokens = 0
+
+      for sentence in sentences:
+        #Tokenize & Normalize sentences in validation data
+        tokens = nltk.word_tokenize(sentence)
+        tokens = [token.lower() for token in tokens if token.isalpha()]
+        tokens = ["<s>"] + tokens + ["</s>"]
+
+        total_tokens += (len(tokens) - 1)
+
+        # Calculate negative log probability for each bigram
+        for i in range(1, len(tokens)):
+            bigram = (tokens[i-1], tokens[i])
+            try:
+                p = self.df.loc[self.df['bigram'] == bigram, 'probability'].values[0]
+            except IndexError:
+                p = 1e-6  # fallback probability for unseen bigrams
+            total_log_prob += -np.log(p)
+
+      avg_log_prob = total_log_prob / total_tokens
+      perplexity = np.exp(avg_log_prob)
+      return perplexity
+
+  def _init_bigram(self):
+
+    #Split corpus into sentences
+    sentences = nltk.sent_tokenize(" ".join(self.corpus))
+    tokens = []
+
+    for sentence in sentences:
+        #Tokenize & Normalize each sentence
+        sentence_tokens = nltk.word_tokenize(sentence)
+        sentence_tokens = [token.lower() for token in sentence_tokens if token.isalpha()]
+
+        #Add start & end token on sentences
+        tokens.extend(["<s>"] + sentence_tokens + ["</s>"])
+
+    self.tokens = tokens
+
+    #Generate bigram tuples: (prev_word, curr_word)
+    self.bigrams = list(zip(tokens[:-1], tokens[1:]))
+
+    unique_bigrams = list(set(self.bigrams))
+
+    self.df = pd.DataFrame({'bigram': unique_bigrams})
+
+  def _init_bigram_counts(self):
+    self.df['count'] = self.df['bigram'].apply(lambda bg: self.bigrams.count(bg))
+
+  def _init_bigram_probability(self):
+    self.df['probability'] = self.df['bigram'].apply(self._calc_bigram_probability)
+
+  def _calc_bigram_probability(self, bigram):
+    first_word = bigram[0]
+
+    preceding_count = sum(1 for bg in self.bigrams if bg[0] == first_word)
+    if preceding_count == 0:
+        return 0
+    return self.bigrams.count(bigram) / preceding_count
+  
 
 def run_unigram_model():
   unigram = UnigramModel()
