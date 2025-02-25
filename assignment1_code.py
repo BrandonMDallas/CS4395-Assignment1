@@ -199,8 +199,10 @@ def run_bigram_model():
   bigram_perplexity = bigram.compute_perplexity(val_data)
   print(bigram.run("<s>no door was</s>"))
   print("Bigram Model Perplexity: ",bigram_perplexity)
+  
 def main():
     run_unigram_model()
+    run_bigram_model()
     #print("Main")
     
 if __name__=="__main__":
