@@ -2,8 +2,7 @@ import nltk
 import pandas as pd
 import numpy as np
 import string
-from preprocess import preprocess, tokenize_sentences
-#nltk.download('punkt_tab')
+from preprocess import tokenize_sentences
 
 class BigramModel():
   def set_training_corpus(self, corpus):

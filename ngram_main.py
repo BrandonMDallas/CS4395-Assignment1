@@ -17,7 +17,7 @@ def run_unigram_model():
   unigram = UnigramModel()
   unigram.set_training_corpus(train_data)
   unigram.load()
-  result = unigram.run("<s>was no door</s>")
+  result = unigram.run("was no door.")
   print(result)
   unigram_perplexity = unigram.compute_perplexity(val_data)
   print("Unigram Model Perplexity: ",unigram_perplexity)
@@ -34,7 +34,7 @@ def run_bigram_model():
   
 def main():
     run_unigram_model()
-    run_bigram_model()
+    #run_bigram_model()
     
 if __name__=="__main__":
     main()
