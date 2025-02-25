@@ -1,11 +1,13 @@
-def get_train():
-    train_path = './A1_DATASET/train.txt'
-    with open(train_path) as file:
-        data = file.read()
-    return data
+TRAIN_PATH = './A1_DATASET/train.txt'
+VAL_PATH = './A1_DATASET/val.txt'
+class Data():
+    def get_train(self):
+        with open(TRAIN_PATH) as file:
+            data = file.read()
+        print(data)
+        return data
 
-def get_val():
-    val_path = './A1_DATASET/val.txt'
-    with open(val_path) as file:
-        data = file.read()
-    return data
+    def get_val(self):
+        with open(VAL_PATH) as file:
+            data = file.read()
+        return data

@@ -1,4 +1,5 @@
 import math
+import string
 import numpy as np
 import pandas as pd
 import nltk
@@ -25,6 +26,29 @@ data = Data()
 
 train_data = data.get_train()
 val_data = data.get_val()
+
+    
+"""
+Preprocessing methods
+"""
+def preprocess(text):
+    text = text.lower()  # Lowercase normalization
+    text = text.translate(str.maketrans('', '', string.punctuation)) #Remove punctuation
+    return text
+  
+def tokenize_sentences(text):
+  sentences = nltk.sent_tokenize(text)
+  tagged_sentences = []
+  
+  for sentence in sentences:
+    preprocessed_sentence = preprocess(sentence)
+    words = nltk.word_tokenize(preprocessed_sentence)
+    if not words:
+      continue
+    new_sentence = ['<s>'] + words + ['</s>']
+    new_sentence = ' '.join(new_sentence)
+    tagged_sentences.append(new_sentence)
+  return ' '.join(tagged_sentences)
 
 """
 Class that handles the Unigram Model
@@ -206,8 +230,9 @@ def run_bigram_model():
   print("Bigram Model Perplexity: ",bigram_perplexity)
   
 def main():
-    run_unigram_model()
-    run_bigram_model()
+    print(tokenize_sentences("I ran up the stairs. It took me a while I was out of breath."))
+    #run_unigram_model()
+    #run_bigram_model()
     #print("Main")
     
 if __name__=="__main__":
