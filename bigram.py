@@ -25,6 +25,8 @@ class BigramModel():
     '''
 
   def set_val_corpus(self, val):
+    self.val_corpus = tokenize_sentences(val)
+    '''
     sentences = nltk.sent_tokenize(val)
     tagged_sentences = []
     for sentence in sentences:
@@ -38,6 +40,7 @@ class BigramModel():
       sentence = ' '.join(sentence)
       tagged_sentences.append(sentence)
     self.val_corpus = ' '.join(tagged_sentences)
+    '''
 
   def load(self):
     self._init_bigrams()
@@ -46,7 +49,7 @@ class BigramModel():
 
   def run(self, text):
     tokens = tokenize_sentences(text).split()
-    
+    print(tokens)
     '''
     sentences = nltk.sent_tokenize(text)
     tagged_sentences = []
