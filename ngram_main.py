@@ -45,7 +45,14 @@ def run_unigram_model():
   print("Unigram Model Perplexity: ",unigram_perplexity)
 
 def run_bigram_model():
-  print("...")
+  train_data = Data(TRAIN_PATH).get_contents()
+  val_data = Data(VAL_PATH).get_contents()
+  bigram = BigramModel()
+  bigram.set_training_corpus(train_data)
+  bigram.load()
+  bigram_perplexity = bigram.compute_perplexity(val_data)
+  print(bigram.run("<s>no door was</s>"))
+  print("Bigram Model Perplexity: ",bigram_perplexity)
   #bigram = BigramModel()
   #bigram.set_training_corpus(train_data)
   #bigram.load()
@@ -55,6 +62,7 @@ def run_bigram_model():
   
 def main():
     run_unigram_model()
+    run_bigram_model()
     #print(tokenize_sentences("I ran up the stairs. It took me a while I was out of breath."))
     #run_unigram_model()
     #run_bigram_model()

@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import string
 
-nltk.download('punkt_tab')
+#nltk.download('punkt_tab')
 
 class BigramModel():
   def set_training_corpus(self, corpus):
