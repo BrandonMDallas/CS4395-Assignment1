@@ -1,7 +1,6 @@
 import nltk
 import pandas as pd
 import numpy as np
-
 class UnigramModel():
   def set_training_corpus(self, corpus):
     self.corpus = corpus

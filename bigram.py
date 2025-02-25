@@ -1,4 +1,3 @@
-from data import get_train, get_val
 import nltk
 import pandas as pd
 import numpy as np
@@ -125,10 +124,11 @@ class BigramModel():
     return self.bigrams.count(bigram) / preceding_count
 
 
-
+""" 
 bigram = BigramModel()
 bigram.set_training_corpus(get_train())
 bigram.set_val_corpus(get_val())
 bigram.load()
 print(bigram.df)
 print(bigram.run("room with big windows. we had wonderful food."))
+"""
