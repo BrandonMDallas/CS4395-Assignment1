@@ -2,11 +2,13 @@ import nltk
 import pandas as pd
 import numpy as np
 import string
-
+from preprocess import preprocess, tokenize_sentences
 #nltk.download('punkt_tab')
 
 class BigramModel():
   def set_training_corpus(self, corpus):
+    self.corpus = tokenize_sentences(corpus)
+    '''
     sentences = nltk.sent_tokenize(corpus)
     tagged_sentences = []
     for sentence in sentences:
@@ -20,6 +22,7 @@ class BigramModel():
       sentence = ' '.join(sentence)
       tagged_sentences.append(sentence)
     self.corpus = ' '.join(tagged_sentences)
+    '''
 
   def set_val_corpus(self, val):
     sentences = nltk.sent_tokenize(val)
@@ -42,6 +45,9 @@ class BigramModel():
     self._init_bigram_probability()
 
   def run(self, text):
+    tokens = tokenize_sentences(text).split()
+    
+    '''
     sentences = nltk.sent_tokenize(text)
     tagged_sentences = []
     for sentence in sentences:
@@ -56,6 +62,7 @@ class BigramModel():
       tagged_sentences.append(sentence)
     tokens = (' '.join(tagged_sentences)).split()
     print(tokens)
+    '''
 
     """
     tokens = nltk.word_tokenize(text)
@@ -76,6 +83,22 @@ class BigramModel():
     return np.prod(probabilities)
 
   def compute_perplexity(self, text):
+    tokens = tokenize_sentences(text).split()
+    total_log_prob = 0.0
+    total_tokens = len(tokens) - 1  # Number of bigrams
+
+    for i in range(1, len(tokens)):
+        bigram = (tokens[i-1], tokens[i])
+        try:
+            p = self.df.loc[self.df['bigram'] == bigram, 'probability'].values[0]
+        except IndexError:
+            p = 1e-6  # fallback probability for unseen bigrams
+        total_log_prob += -np.log(p)
+    
+    avg_log_prob = total_log_prob / total_tokens
+    perplexity = np.exp(avg_log_prob)
+    return perplexity
+  '''
       #Split validation text into sentences
       sentences = nltk.sent_tokenize(text)
       total_log_prob = 0.0
@@ -102,7 +125,7 @@ class BigramModel():
       avg_log_prob = total_log_prob / total_tokens
       perplexity = np.exp(avg_log_prob)
       return perplexity
-
+    '''
 
   def _init_bigrams(self):
     tokens = self.corpus.split()
