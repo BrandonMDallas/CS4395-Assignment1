@@ -26,7 +26,9 @@ data = Data()
 train_data = data.get_train()
 val_data = data.get_val()
 
-
+"""
+Class that handles the Unigram Model
+"""
 class UnigramModel():
   def set_training_corpus(self, corpus):
     self.corpus = corpus
@@ -84,6 +86,9 @@ class UnigramModel():
     unigram_count = self.df.loc[self.df['unigram'] == unigram, 'count'].values[0]
     return unigram_count / len(self.corpus)
 
+"""
+Class that handles the Bigram Model
+"""
 class BigramModel():
 
   def set_training_corpus(self, corpus):
