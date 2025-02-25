@@ -6,19 +6,18 @@ import nltk
 """
 Used for loading in the train and validation data in google drive
 """
+TRAIN_PATH = 'train.txt'
+VAL_PATH = 'val.txt'
+
 class Data():
-  def __init__(self):
-    drive.mount('/content/drive')
 
   def get_train(self):
-    train_path = '/content/drive/My Drive/CS_4395_Assignments/A1/train.txt'
-    with open(train_path, 'r') as f:
+    with open(TRAIN_PATH, 'r') as f:
       return f.read()
 
 
   def get_val(self):
-    val_path = '/content/drive/My Drive/CS_4395_Assignments/A1/val.txt'
-    with open(val_path, 'r') as f:
+    with open(VAL_PATH, 'r') as f:
       return f.read()
 
 data = Data()
