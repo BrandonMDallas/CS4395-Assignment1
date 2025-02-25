@@ -3,24 +3,21 @@ import string
 import numpy as np
 import pandas as pd
 import nltk
+from unigram import UnigramModel
+from bigram import BigramModel
+
 
 nltk.download('punkt_tab')
-"""
-Used for loading in the train and validation data in google drive
-"""
 TRAIN_PATH = 'train.txt'
 VAL_PATH = 'val.txt'
 
-class Data():
+class Data:
+    def __init__(self, file_path: str):
+        self.file_path = file_path
 
-  def get_train(self):
-    with open(TRAIN_PATH, 'r') as f:
-      return f.read()
-
-
-  def get_val(self):
-    with open(VAL_PATH, 'r') as f:
-      return f.read()
+    def get_contents(self) -> str:
+        with open(self.file_path, 'r') as file:
+            return file.read()
 
 data = Data()
 
