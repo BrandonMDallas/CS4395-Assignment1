@@ -191,6 +191,14 @@ def run_unigram_model():
   print(result)
   unigram_perplexity = unigram.compute_perplexity(val_data)
   print("Unigram Model Perplexity: ",unigram_perplexity)
+
+def run_bigram_model():
+  bigram = BigramModel()
+  bigram.set_training_corpus(train_data)
+  bigram.load()
+  bigram_perplexity = bigram.compute_perplexity(val_data)
+  print(bigram.run("<s>no door was</s>"))
+  print("Bigram Model Perplexity: ",bigram_perplexity)
 def main():
     run_unigram_model()
     #print("Main")
