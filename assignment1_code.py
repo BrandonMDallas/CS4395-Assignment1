@@ -26,14 +26,6 @@ train_data = data.get_train()
 val_data = data.get_val()
 
 
-    
-def preprocess_line(line, lowercase=True):
-    tokens = line.strip().split()
-    
-    if lowercase:
-        tokens = [token.lower() for token in tokens]
-        
-    return tokens
 
 def main():
     print("Main")
