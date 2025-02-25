@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import nltk
 
+nltk.download('punkt_tab')
 """
 Used for loading in the train and validation data in google drive
 """
@@ -83,8 +84,18 @@ class UnigramModel():
     unigram_count = self.df.loc[self.df['unigram'] == unigram, 'count'].values[0]
     return unigram_count / len(self.corpus)
 
+
+def run_unigram_model():
+  unigram = UnigramModel()
+  unigram.set_training_corpus(train_data)
+  unigram.load()
+  result = unigram.run("<s>was no door</s>")
+  print(result)
+  unigram_perplexity = unigram.compute_perplexity(val_data)
+  print("Unigram Model Perplexity: ",unigram_perplexity)
 def main():
-    print("Main")
+    run_unigram_model()
+    #print("Main")
     
 if __name__=="__main__":
     main()
