@@ -67,6 +67,6 @@ class UnigramModel():
     # calculates the probability of each word in the corpus
     self.df['probability'] = self.df['unigram'].apply(self._calc_unigram_probability)
 
-  def _calc_unigram_probability(self, unigram):
+  def _calc_unigram_probability(self, unigram, k=1):
     unigram_count = self.df.loc[self.df['unigram'] == unigram, 'count'].values[0]
-    return unigram_count / len(self.corpus)
+    return (unigram_count + k) / (len(self.corpus) + k * len(self.df))

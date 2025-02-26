@@ -78,9 +78,9 @@ class BigramModel():
   def _init_bigram_probability(self):
     self.df['probability'] = self.df['bigram'].apply(self._calc_bigram_probability)
 
-  def _calc_bigram_probability(self, bigram):
+  def _calc_bigram_probability(self, bigram, k=1):
     first_word = bigram[0]
     preceding_count = sum(1 for bg in self.bigrams if bg[0] == first_word)
     if preceding_count == 0:
         return 0
-    return self.bigrams.count(bigram) / preceding_count
+    return (self.bigrams.count(bigram) + k) / (preceding_count + k * len(self.df))
