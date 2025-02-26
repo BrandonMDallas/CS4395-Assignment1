@@ -2,13 +2,15 @@ import nltk
 import pandas as pd
 import numpy as np
 from preprocess import preprocess
+
+UNK = '<UNK>'
 class UnigramModel():
   def set_training_corpus(self, corpus, vocab):
     processed_text  = preprocess(corpus)
     tokens  = nltk.word_tokenize(processed_text)
     
     # Keep only alphabetic tokens and replace OOV words with <UNK>
-    self.corpus = [token if token in vocab else '<UNK>' for token in tokens if token.isalpha()]
+    self.corpus = [token if token in vocab else UNK for token in tokens if token.isalpha()]
 
   def load(self):
     # This just initializes the pandas dataframe to keep track of all unigram information (unigram, number of appearences, and probability of occurence)
@@ -23,7 +25,7 @@ class UnigramModel():
       preprocessed_text = preprocess(text)
       tokens = nltk.word_tokenize(preprocessed_text)
       # Keep only alphabetic tokens and replace OOV words with <UNK>
-      tokens = [token if token in vocab else '<UNK>' for token in tokens if token.isalpha()]
+      tokens = [token if token in vocab else UNK for token in tokens if token.isalpha()]
       print("Tokens:", tokens)
       word_probabilities = []
       for word in tokens:
@@ -40,7 +42,7 @@ class UnigramModel():
       """
       preprocessed_text = preprocess(text)
       tokens = nltk.word_tokenize(preprocessed_text)
-      tokens = [token if token in vocab else '<UNK>' for token in tokens if token.isalpha()]
+      tokens = [token if token in vocab else UNK for token in tokens if token.isalpha()]
       N = len(tokens)
       total_log_prob = 0.0
       for word in tokens:

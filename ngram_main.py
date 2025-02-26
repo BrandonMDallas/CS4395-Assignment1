@@ -19,7 +19,7 @@ def run_unigram_model():
   # Build vocabulary from the training data (using the file directly)
   train_vocab = build_vocab(TRAIN_PATH, min_freq=2)
   
-  replace_unknowns(VAL_PATH, train_vocab, 'validation_processed.txt')
+  #replace_unknowns(VAL_PATH, train_vocab, 'validation_processed.txt')
   
   # Initialize and train the Unigram model using the processed data
   unigram = UnigramModel()
@@ -34,18 +34,29 @@ def run_unigram_model():
   print("Unigram Model Perplexity:", unigram_perplexity)
 
 def run_bigram_model():
-  train_data = Data(TRAIN_PATH).get_contents()
-  val_data = Data(VAL_PATH).get_contents()
-  bigram = BigramModel()
-  bigram.set_training_corpus(train_data)
-  bigram.load()
-  bigram_perplexity = bigram.compute_perplexity(val_data)
-  print(bigram.run("no door was"))
-  print("Bigram Model Perplexity: ",bigram_perplexity)
+    # Load training and validation data from file
+    train_data = Data(TRAIN_PATH).get_contents()
+    val_data = Data(VAL_PATH).get_contents()
+    
+    # Build vocabulary from the training data (using the file directly)
+    train_vocab = build_vocab(TRAIN_PATH, min_freq=2)
+    
+    # Initialize and train the Bigram model using the processed data
+    bigram = BigramModel()
+    bigram.set_training_corpus(train_data, train_vocab)
+    bigram.set_val_corpus(val_data, train_vocab)
+    bigram.load()
+    
+    # Evaluate the model on an example sentence (make sure to pass the vocab)
+    bigram_result = bigram.run("no door was", train_vocab)
+    print("Bigram probability product:", bigram_result)
+    
+    bigram_perplexity = bigram.compute_perplexity(val_data, train_vocab)
+    print("Bigram Model Perplexity:", bigram_perplexity)
   
 def main():
     run_unigram_model()
-    #run_bigram_model()
+    run_bigram_model()
     
 if __name__=="__main__":
     main()
