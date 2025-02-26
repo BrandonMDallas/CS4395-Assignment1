@@ -26,7 +26,7 @@ def run_unigram_model():
   unigram.set_training_corpus(train_data, train_vocab)
   unigram.load()
   
-  # Evaluate the model on an example sentence (make sure to pass the vocab)
+  # Evaluate the model on an example sentence
   result = unigram.run("was no door.", train_vocab)
   print("Unigram probability product:", result)
   
@@ -47,7 +47,7 @@ def run_bigram_model():
     bigram.set_val_corpus(val_data, train_vocab)
     bigram.load()
     
-    # Evaluate the model on an example sentence (make sure to pass the vocab)
+    # Evaluate the model on an example sentence
     bigram_result = bigram.run("no door was", train_vocab)
     print("Bigram probability product:", bigram_result)
     
