@@ -147,13 +147,3 @@ class BigramModel():
     if preceding_count == 0:
         return 0
     return self.bigrams.count(bigram) / preceding_count
-
-
-""" 
-bigram = BigramModel()
-bigram.set_training_corpus(get_train())
-bigram.set_val_corpus(get_val())
-bigram.load()
-print(bigram.df)
-print(bigram.run("room with big windows. we had wonderful food."))
-"""
