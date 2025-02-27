@@ -56,7 +56,19 @@ def run_bigram_model(k=1):
   
 def main():
     run_unigram_model(0.1)
+    run_unigram_model(0.5)
+    run_unigram_model(1)
+    run_unigram_model(1.5)
+    run_unigram_model(2)
+    run_unigram_model(5)
+    run_unigram_model(10)
+    run_bigram_model(0.1)
+    run_bigram_model(0.5)
     run_bigram_model(1)
+    run_bigram_model(1.5)
+    run_bigram_model(2)
+    run_bigram_model(5)
+    run_bigram_model(10)
     
 if __name__=="__main__":
     main()
