@@ -42,16 +42,16 @@ def run_bigram_model():
     train_vocab = build_vocab(TRAIN_PATH, min_freq=2)
     
     # Initialize and train the Bigram model using the processed data
-    bigram = BigramModel()
+    bigram = BigramModel(k = 1)
     bigram.set_training_corpus(train_data, train_vocab)
     bigram.set_val_corpus(val_data, train_vocab)
     bigram.load()
     
     # Evaluate the model on an example sentence
-    bigram_result = bigram.run("no door was", train_vocab)
+    bigram_result = bigram.run("no door was")
     print("Bigram probability product:", bigram_result)
     
-    bigram_perplexity = bigram.compute_perplexity(val_data, train_vocab)
+    bigram_perplexity = bigram.compute_perplexity(val_data)
     print("Bigram Model Perplexity:", bigram_perplexity)
   
 def main():
