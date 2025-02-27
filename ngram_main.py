@@ -26,11 +26,12 @@ def run_unigram_model(k=1):
     unigram.load()
 
     # Evaluate on an example sentence and print results with k setting
-    result = unigram.run("was no door.", train_vocab)
-    print(f"Unigram probability product (k={k}):", result)
+    example = "i booked the"
+    result = unigram.run(example, train_vocab)
+    print(f"Unigram probability product (k={k}): ", result)
 
     unigram_perplexity = unigram.compute_perplexity(val_data, train_vocab)
-    print(f"Unigram Model Perplexity (k={k}):", unigram_perplexity)
+    print(f"Unigram Model Perplexity (k={k}): ", unigram_perplexity, "\n")
 
 def run_bigram_model(k=1):
     # Load training and validation data
@@ -47,14 +48,17 @@ def run_bigram_model(k=1):
     bigram.load()
 
     # Evaluate on an example sentence and print results with k setting
-    bigram_result = bigram.run("no door was")
-    print(f"Bigram probability product (k={k}):", bigram_result)
+    example = "i booked the"
+    bigram_result = bigram.run(example)
+    print(f"Bigram probability product (k={k}): ", bigram_result)
 
     bigram_perplexity = bigram.compute_perplexity(val_data)
-    print(f"Bigram Model Perplexity (k={k}):", bigram_perplexity)
+    print(f"Bigram Model Perplexity (k={k}): ", bigram_perplexity, "\n")
 
   
 def main():
+    print("Unigram Model Benchmarks:")
+    print("Testing on the phrase: 'i booked the' \n")
     run_unigram_model(0.1)
     run_unigram_model(0.5)
     run_unigram_model(1)
@@ -62,6 +66,8 @@ def main():
     run_unigram_model(2)
     run_unigram_model(5)
     run_unigram_model(10)
+    print("Bigram Model Benchmarks:")
+    print("Testing on the phrase: 'i booked the' \n")
     run_bigram_model(0.1)
     run_bigram_model(0.5)
     run_bigram_model(1)
