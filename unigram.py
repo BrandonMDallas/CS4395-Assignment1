@@ -5,6 +5,11 @@ from preprocess import preprocess
 
 UNK = '<UNK>'
 class UnigramModel():
+  def __init__(self, k=1):
+      """
+      Initialize the UnigramModel with an adjustable smoothing parameter k.
+      """
+      self.k = k
   def set_training_corpus(self, corpus, vocab):
     processed_text  = preprocess(corpus)
     tokens  = nltk.word_tokenize(processed_text)
@@ -26,7 +31,6 @@ class UnigramModel():
       tokens = nltk.word_tokenize(preprocessed_text)
       # Keep only alphabetic tokens and replace OOV words with <UNK>
       tokens = [token if token in vocab else UNK for token in tokens if token.isalpha()]
-      print("Tokens:", tokens)
       word_probabilities = []
       for word in tokens:
           try:
@@ -67,6 +71,7 @@ class UnigramModel():
     # calculates the probability of each word in the corpus
     self.df['probability'] = self.df['unigram'].apply(self._calc_unigram_probability)
 
-  def _calc_unigram_probability(self, unigram, k=1):
-    unigram_count = self.df.loc[self.df['unigram'] == unigram, 'count'].values[0]
-    return (unigram_count + k) / (len(self.corpus) + k * len(self.df))
+  def _calc_unigram_probability(self, unigram):
+      unigram_count = self.df.loc[self.df['unigram'] == unigram, 'count'].values[0]
+      # Apply add-k smoothing
+      return (unigram_count + self.k) / (len(self.corpus) + self.k * len(self.df))

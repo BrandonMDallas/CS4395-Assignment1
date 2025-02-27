@@ -70,11 +70,10 @@ class BigramModel():
         # Precompute bigram counts and first-word counts using Counter
         self.bigram_counts = Counter(self.bigrams)
         self.first_word_counts = Counter(bigram[0] for bigram in self.bigrams)
-        # Optional: create a DataFrame to view counts (not used for inference)
+
         self.df = pd.DataFrame(list(self.bigram_counts.items()), columns=['bigram', 'count'])
 
     def _init_bigram_probability(self):
-        # Use the adjustable smoothing parameter self.k here
         vocab_size = len(self.vocab)
         self.probability_map = {}
         for bigram, count in self.bigram_counts.items():
@@ -84,9 +83,6 @@ class BigramModel():
             self.probability_map[bigram] = probability
 
     def _calc_bigram_probability(self, bigram):
-        """
-        Helper function if you need to calculate probability for a single bigram.
-        """
         first_word = bigram[0]
         preceding_count = self.first_word_counts[first_word]
         return (self.bigram_counts[bigram] + self.k) / (preceding_count + self.k * len(self.vocab))
