@@ -26,7 +26,7 @@ def run_unigram_model(k=1):
     unigram.load()
 
     # Evaluate on an example sentence and print results with k setting
-    example = "i booked the"
+    example = "i booked the room"
     result = unigram.run(example, train_vocab)
     print(f"Unigram probability product (k={k}): ", result)
 
@@ -48,7 +48,7 @@ def run_bigram_model(k=1):
     bigram.load()
 
     # Evaluate on an example sentence and print results with k setting
-    example = "i booked the"
+    example = "i booked the room"
     bigram_result = bigram.run(example)
     print(f"Bigram probability product (k={k}): ", bigram_result)
 
@@ -58,7 +58,7 @@ def run_bigram_model(k=1):
   
 def main():
     print("Unigram Model Benchmarks:")
-    print("Testing on the phrase: 'i booked the' \n")
+    print("Testing on the phrase: 'i booked the room' \n")
     run_unigram_model(0.1)
     run_unigram_model(0.5)
     run_unigram_model(1)
@@ -67,7 +67,7 @@ def main():
     run_unigram_model(5)
     run_unigram_model(10)
     print("Bigram Model Benchmarks:")
-    print("Testing on the phrase: 'i booked the' \n")
+    print("Testing on the phrase: 'i booked the room' \n")
     run_bigram_model(0.1)
     run_bigram_model(0.5)
     run_bigram_model(1)
