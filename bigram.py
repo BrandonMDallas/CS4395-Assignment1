@@ -2,6 +2,7 @@ import nltk
 import pandas as pd
 import numpy as np
 import string
+from collections import Counter
 from preprocess import tokenize_sentences
 
 
@@ -23,7 +24,8 @@ class BigramModel():
     tokenized_text = tokenize_sentences(corpus)
     tokens = tokenized_text.split()
     self.corpus = ' '.join([replace_token(token, vocab) for token in tokens])
-
+    self.vocab = vocab
+    
   def set_val_corpus(self, val, vocab):
       tokenized_text = tokenize_sentences(val)
       tokens = tokenized_text.split()
@@ -34,11 +36,11 @@ class BigramModel():
     self._init_bigram_counts()
     self._init_bigram_probability()
 
-  def run(self, text, vocab):
+  def run(self, text):
     preprocessed_text = tokenize_sentences(text)
     tokens = preprocessed_text.split()
     # Replace tokens using the helper function
-    tokens = [replace_token(token, vocab) for token in tokens]
+    tokens = [replace_token(token, self.vocab) for token in tokens]
     probabilities = []
     for i in range(1, len(tokens)):
         bigram = (tokens[i-1], tokens[i])
@@ -49,10 +51,10 @@ class BigramModel():
         probabilities.append(p)
     return np.prod(probabilities)
 
-  def compute_perplexity(self, text, vocab):
+  def compute_perplexity(self, text):
     preprocessed_text = tokenize_sentences(text)
     tokens = preprocessed_text.split()
-    tokens = [replace_token(token, vocab) for token in tokens]
+    tokens = [replace_token(token, self.vocab) for token in tokens]
     total_log_prob = 0.0
     total_tokens = len(tokens) - 1  # number of bigrams
     for i in range(1, len(tokens)):
@@ -83,4 +85,4 @@ class BigramModel():
     preceding_count = sum(1 for bg in self.bigrams if bg[0] == first_word)
     if preceding_count == 0:
         return 0
-    return (self.bigrams.count(bigram) + k) / (preceding_count + k * len(self.df))
+    return (self.bigrams.count(bigram) + k) / (preceding_count + k * len(self.vocab))
